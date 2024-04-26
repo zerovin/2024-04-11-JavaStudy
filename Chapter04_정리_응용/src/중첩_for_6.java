@@ -271,7 +271,7 @@ public class 중첩_for_6 {
 					}
 				}
 			}
-			//힌트제공
+			//힌트제공--
 			System.out.printf("Input Number:%d,Result:%dS-%dB\n",input,s,b);
 			
 			// 4.정답여부 확인 정답=>종료(break)/오답=>다시입력(continue)

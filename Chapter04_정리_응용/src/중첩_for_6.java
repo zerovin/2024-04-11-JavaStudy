@@ -260,8 +260,8 @@ public class 중첩_for_6 {
 			// 3.비교 => 힌트
 			int s=0,b=0; //s = 숫자와 자리수가 맞는 경우
 			             //b = 숫자는 있고 자리수가 맞지 않는 경우
-			for(int i=0;i<com.length-1;i++) { //com
-				for(int j=0;j<user.length;j++) { //user
+			for(int i=0;i<3;i++) { //com
+				for(int j=0;j<3;j++) { //user
 					if(com[i]==user[j]) { //같은 수가 존재하는지
 						if(i==j) { //같은 수, 같은 자리
 							s++;

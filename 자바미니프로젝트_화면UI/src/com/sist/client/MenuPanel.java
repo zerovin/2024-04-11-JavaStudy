@@ -5,6 +5,7 @@ import javax.swing.*;
 //홈 검색 채팅 게시판 뉴스
 public class MenuPanel extends JPanel{
 	public JButton b1,b2,b3,b4,b5,b6;
+	//JButton[] btn=new JButton[6];
 	//초기화 => 배치
 	public MenuPanel(){
 		setLayout(new GridLayout(1,5,5,5)); //같은 크기의 버튼 생성

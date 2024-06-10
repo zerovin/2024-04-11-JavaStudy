@@ -1,6 +1,9 @@
 package com.sist.client;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -142,5 +145,7 @@ public class JoinPanel extends JPanel{
 		btnP.add(cancel);
 		btnP.setBounds(10, 660, 940, 35);
 		add(btnP);
+		
 	}
+
 }

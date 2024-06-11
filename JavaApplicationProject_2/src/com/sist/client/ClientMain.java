@@ -3,13 +3,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import com.sist.dao.*;
 public class ClientMain extends JFrame implements ActionListener{
 	CardLayout card=new CardLayout();
 	LoginPanel loginP=new LoginPanel();
 	MainPanel mainP=new MainPanel();
 	JoinPanel joinP=new JoinPanel();
-	
+	PostFindFrame post=new PostFindFrame(); //우편번호 검색창
 	public ClientMain() {
 		setLayout(card);
 		add("LOGIN",loginP);
@@ -27,7 +30,10 @@ public class ClientMain extends JFrame implements ActionListener{
 		loginP.joinBtn.addActionListener(this); //회원가입
 		loginP.cancelBtn.addActionListener(this); //종료
 		joinP.cancel.addActionListener(this);
-		
+		joinP.postFind.addActionListener(this); //우편번호검색
+		post.find.addActionListener(this); //우편번호 검색
+		post.cancel.addActionListener(this); //우편번호 취소
+		post.postTf.addActionListener(this); //우편번호 입력
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -86,6 +92,36 @@ public class ClientMain extends JFrame implements ActionListener{
 			card.show(getContentPane(),"JOIN");
 		}else if(e.getSource()==joinP.cancel) {
 			card.show(getContentPane(),"LOGIN");
+		}else if(e.getSource()==joinP.postFind) {
+			for(int i=post.model.getRowCount()-1;i>=0;i--) {
+				post.model.removeRow(i); //열릴때마다 리스트 리셋, 지우기
+			}
+			post.postTf.setText("");
+			post.setVisible(true);
+		}else if(e.getSource()==post.cancel) {
+			post.setVisible(false);
+		}else if(e.getSource()==post.find || e.getSource()==post.postTf) {
+			String dong=post.postTf.getText();
+			if(dong.length()<1) {
+				JOptionPane.showMessageDialog(this, "동/읍/면을 입력하세요");
+				post.postTf.requestFocus();
+				return;
+			}
+			MemberDAO dao=MemberDAO.newInstance();
+			ArrayList<ZipcodeVO> list=dao.postFindData(dong);
+			if(list.size()==0) {
+				JOptionPane.showMessageDialog(this, "검색된 결과가 없습니다");
+				post.postTf.setText("");
+				post.postTf.requestFocus();
+			}else {
+				for(int i=post.model.getRowCount()-1;i>=0;i--) {
+					post.model.removeRow(i); //열릴때마다 리스트 리셋, 지우기
+				}
+				for(ZipcodeVO vo:list) {
+					String[] data= {vo.getZipcode(), vo.getAddress()};
+					post.model.addRow(data);
+				}
+			}
 		}
 	}
 

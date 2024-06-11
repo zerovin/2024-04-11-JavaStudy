@@ -29,6 +29,8 @@ public class JoinPanel extends JPanel{
 		
 		id=new JLabel("아이디");
 		idF=new JTextField();
+		idF.setEnabled(false);
+		
 		idCheck=new JButton("아이디 중복체크");
 		id.setBounds(230, 110, 80, 30);
 		idF.setBounds(320, 110, 180, 30);

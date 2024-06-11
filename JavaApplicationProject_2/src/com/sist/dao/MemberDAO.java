@@ -108,4 +108,32 @@ public class MemberDAO {
 	//3.회원수정
 	//4.회원탈퇴
 	//SQL문장 제작할 줄 알아야 웹도 가능 DAO는 변경X
+	//5.우편번호 검색
+	public ArrayList<ZipcodeVO> postFindData(String dong){
+		ArrayList<ZipcodeVO> list=new ArrayList<ZipcodeVO>();
+		try {
+			getConnection();
+			String sql="SELECT zipcode, sido, gugun, dong, NVL(bunji,' ') "
+					+ "FROM zipcode "
+					+ "WHERE dong LIKE '%'||?||'%'";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, dong); //자동으로 '서교', setString은 자동으로 작은따옴표 붙여줌
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				ZipcodeVO vo=new ZipcodeVO();
+				vo.setZipcode(rs.getString(1));
+				vo.setSido(rs.getString(2));
+				vo.setGugun(rs.getString(3));
+				vo.setDong(rs.getString(4));
+				vo.setBunji(rs.getString(5));
+				list.add(vo);
+			}
+			rs.close();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			disConnection();
+		}
+		return list;
+	}
 }

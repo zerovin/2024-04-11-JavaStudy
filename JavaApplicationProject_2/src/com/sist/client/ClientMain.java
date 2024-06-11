@@ -16,15 +16,20 @@ public class ClientMain extends JFrame implements ActionListener{
 	public ClientMain() {
 		setLayout(card);
 		add("LOGIN",loginP);
-		add("MAIN", mainP);
 		add("JOIN", joinP);
-
+		add("MAIN", mainP);
 		
 		setSize(960, 750);
 		setResizable(false);
 		setVisible(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); //윈도우 창 우측상단 X버튼으로 종료금지
 	
+		mainP.menuP.homeBtn.addActionListener(this); //홈
+		mainP.menuP.findBtn.addActionListener(this); //검색
+		mainP.menuP.newsBtn.addActionListener(this); //뉴스
+		mainP.menuP.boardBtn.addActionListener(this); //게시판
+		mainP.menuP.chatBtn.addActionListener(this); //채팅
+		mainP.menuP.exitBtn.addActionListener(this); //종료
 		
 		loginP.loginBtn.addActionListener(this); //로그인
 		loginP.joinBtn.addActionListener(this); //회원가입
@@ -92,6 +97,10 @@ public class ClientMain extends JFrame implements ActionListener{
 			card.show(getContentPane(),"JOIN");
 		}else if(e.getSource()==joinP.cancel) {
 			card.show(getContentPane(),"LOGIN");
+		}else if(e.getSource()==mainP.menuP.homeBtn){
+			mainP.ctrP.card.show(mainP.ctrP,"BOOKLIST");
+		}else if(e.getSource()==mainP.menuP.findBtn){
+			mainP.ctrP.card.show(mainP.ctrP,"FIND");
 		}else if(e.getSource()==joinP.postFind) {
 			for(int i=post.model.getRowCount()-1;i>=0;i--) {
 				post.model.removeRow(i); //열릴때마다 리스트 리셋, 지우기

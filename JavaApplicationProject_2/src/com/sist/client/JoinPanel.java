@@ -9,7 +9,8 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 public class JoinPanel extends JPanel{
 	JLabel title, id, pw, pw2, name, gender, birth, post, addr1, addr2, phone, phoneD1, phoneD2, email, emailAt, content;
-	JTextField idF, pwF, pw2F, nameF, birthF, postF, addr1F, addr2F, phoneF1, phoneF2, phoneF3, emailF;
+	JTextField idF, nameF, birthF, postF, addr1F, addr2F, phoneF1, phoneF2, phoneF3, emailF;
+	JPasswordField pwF, pw2F;
 	JRadioButton genderM, genderW;
 	JComboBox emailCombo;
 	JTextArea conT;
@@ -40,13 +41,13 @@ public class JoinPanel extends JPanel{
 		add(idCheck);
 		
 		pw=new JLabel("비밀번호");
-		pwF=new JTextField();
+		pwF=new JPasswordField();
 		pw.setBounds(230, 150, 80, 30);
 		pwF.setBounds(320, 150, 180, 30);
 		add(pw);
 		add(pwF);
 		pw2=new JLabel("비밀번호 확인");
-		pw2F=new JTextField();
+		pw2F=new JPasswordField();
 		pw2.setBounds(230, 190, 80, 30);
 		pw2F.setBounds(320, 190, 180, 30);
 		add(pw2);
@@ -68,6 +69,9 @@ public class JoinPanel extends JPanel{
 		add(gender);
 		add(genderM);
 		add(genderW);
+		ButtonGroup bg=new ButtonGroup();
+		bg.add(genderM); bg.add(genderW);
+		
 		
 		birth=new JLabel("생년월일");
 		birthF=new JTextField();

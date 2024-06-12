@@ -77,7 +77,6 @@ public class MemberDAO {
 			}else { //ID가 있는 경우
 				sql="SELECT pwd FROM member "
 						+"WHERE id=?";
-				
 				//오라클로 전송
 				ps=conn.prepareStatement(sql);
 				
@@ -105,10 +104,82 @@ public class MemberDAO {
 		return result;
 	}
 	//2.회원가입 - 아이디중복체크, 우편번호검색
-	//3.회원수정
-	//4.회원탈퇴
-	//SQL문장 제작할 줄 알아야 웹도 가능 DAO는 변경X
-	//5.우편번호 검색
+	/*
+	  ID               NOT NULL VARCHAR2(20)
+      PWD              NOT NULL VARCHAR2(10)
+      NAME             NOT NULL VARCHAR2(51)
+      SEX                       CHAR(6)
+      BIRTHDAY                  VARCHAR2(10)
+      POST             NOT NULL VARCHAR2(7)
+      ADDR1            NOT NULL VARCHAR2(150)
+      ADDR2                     VARCHAR2(150)
+      PHONE                     VARCHAR2(13)
+      EMAIL                     VARCHAR2(100)
+      CONTENT                   CLOB
+      REGDATE                   DATE
+      ADMIN                     CHAR(1) 
+	 */
+	public String memberInsert(MemberVO vo) {
+		/*
+		   Statement 한번에 값 채우기
+		   String sql="INSERT INTO member VALUES('"+vo.getID()+"','"+vo.getPwd+"','"......
+		 */
+		String result="";
+		try {
+			getConnection();
+			String sql="INSERT INTO member VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, SYSDATE, 'n')";
+			ps=conn.prepareStatement(sql);
+			
+			//물음표에 값 채우기
+			ps.setString(1, vo.getId());
+			ps.setString(2, vo.getPwd());
+			ps.setString(3, vo.getName());
+			ps.setString(4, vo.getSex());
+			ps.setString(5, vo.getBirthday());
+			ps.setString(6, vo.getPost());
+			ps.setString(7, vo.getAddr1());
+			ps.setString(8, vo.getAddr2());
+			ps.setString(9, vo.getPhone());
+			ps.setString(10, vo.getEmail());
+			ps.setString(11, vo.getContent());
+			
+			//추가요청
+			ps.executeUpdate(); //INSERT / UPDATE / DELETE에 사용
+			//executeQuery() 데이터를 가지고 온다 SELECT 사용
+			//COMMIT 포함 => 바로저장
+			//executeUpdate()에 conn.commit()포함
+			result="yes";
+		}catch(Exception ex) {
+			result=ex.getMessage();
+			ex.printStackTrace();
+		}finally {
+			disConnection();
+		}
+		return result;
+	}
+	// 2-1. 아이디중복체크
+	public int memberIdCheck(String id) {
+		int count=0;
+		try {
+			getConnection();
+			String sql="SELECT COUNT(*) FROM member "
+					+"WHERE id=?";
+			ps=conn.prepareStatement(sql);
+			
+			//물음표에 값 채우기
+			ps.setString(1, id);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			count=rs.getInt(1); //0 or 1
+			rs.close();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			disConnection();
+		}
+		return count;
+	}
+	//2-2.우편번호 검색
 	public ArrayList<ZipcodeVO> postFindData(String dong){
 		ArrayList<ZipcodeVO> list=new ArrayList<ZipcodeVO>();
 		try {
@@ -136,4 +207,8 @@ public class MemberDAO {
 		}
 		return list;
 	}
+	//3.회원수정
+	//4.회원탈퇴
+	//SQL문장 제작할 줄 알아야 웹도 가능 DAO는 변경X
+	
 }

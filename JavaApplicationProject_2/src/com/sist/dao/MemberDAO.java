@@ -1,5 +1,6 @@
 package com.sist.dao;
 import java.util.*;
+import java.rmi.MarshalException;
 import java.sql.*;
 public class MemberDAO {
 	private Connection conn;
@@ -103,6 +104,31 @@ public class MemberDAO {
 		}
 		return result;
 	}
+	//1-1. 회원 정보 읽기
+	public MemberVO memberInfo(String id) {
+		MemberVO vo=new MemberVO();
+		try {
+			getConnection();
+			String sql="SELECT id, name, sex, admin "
+					+"FROM member "
+					+"WHERE id=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			vo.setId(rs.getString(1));
+			vo.setName(rs.getString(2));
+			vo.setSex(rs.getString(3));
+			vo.setAdmin(rs.getString(4));
+			rs.close();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			disConnection();
+		}
+		return vo;
+	}
+	
 	//2.회원가입 - 아이디중복체크, 우편번호검색
 	/*
 	  ID               NOT NULL VARCHAR2(20)

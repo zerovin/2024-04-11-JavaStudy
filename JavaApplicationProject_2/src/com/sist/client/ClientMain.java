@@ -53,7 +53,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener{
 		post.postTf.addActionListener(this); //우편번호 입력
 		post.table.addMouseListener(this); //우편번호 더블클릭
 		
-		mainP.ctrP.boardLP.insertBtn.addActionListener(this); //글쓰기
+		mainP.ctrP.boardLP.inBtn.addActionListener(this); //글쓰기
 		mainP.ctrP.boardIP.listBtn.addActionListener(this); //목록
 	}
 	public static void main(String[] args) {
@@ -119,6 +119,8 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener{
 			mainP.ctrP.card.show(mainP.ctrP,"FIND");
 		}else if(e.getSource()==mainP.menuP.boardBtn) {
 			mainP.ctrP.card.show(mainP.ctrP, "BOARD");
+		}else if(e.getSource()==mainP.menuP.chatBtn) {
+			mainP.ctrP.card.show(mainP.ctrP, "CHAT");
 		}else if(e.getSource()==joinP.idCheck) {//-------아이디중복체크
 			idFrm.idTf.setText(""); //메모리 초기화
 			idFrm.ok.setVisible(false);
@@ -265,7 +267,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener{
 			}else {				
 				JOptionPane.showMessageDialog(this, "회원 가입에 실패하셨습니다\n"+res);
 			}	
-		}else if(e.getSource()==mainP.ctrP.boardLP.insertBtn) {
+		}else if(e.getSource()==mainP.ctrP.boardLP.inBtn) {
 			mainP.ctrP.card.show(mainP.ctrP,"BOARD_IN");
 		}else if(e.getSource()==mainP.ctrP.boardIP.listBtn) {
 			mainP.ctrP.card.show(mainP.ctrP,"BOARD");

@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 public class FindPanel extends JPanel{
     JTable table;
     DefaultTableModel find;
-	JButton search, entire, add, edit, del;
+	JButton search, entire; // add, edit, del;
 	JTextField searchT;
 	JTextArea list;
 	
@@ -29,14 +29,19 @@ public class FindPanel extends JPanel{
    	   table=new JTable(find);
    	   JScrollPane js=new JScrollPane(table);
    	   
-	   js.setBounds(30, 110, 800, 450);
+	   js.setBounds(30, 110, 880, 500);
 	   add(js);
 	   
 	   entire=new JButton("전체보기");
+	   entire.setBounds(30, 620, 100, 30);
+	   add(entire);
+	   /*
 	   add=new JButton("추가");
 	   del=new JButton("수정");
 	   edit=new JButton("삭제");
+	   */
 	   
+	   /*
 	   JPanel p1=new JPanel();
 	   p1.add(entire);
 	   p1.add(add);
@@ -44,6 +49,6 @@ public class FindPanel extends JPanel{
 	   p1.add(edit);
 	   p1.setBounds(20, 600, 250, 60);
 	   add(p1);
-	   
+	   */
    }
 }

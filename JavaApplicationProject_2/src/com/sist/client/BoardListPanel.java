@@ -6,91 +6,77 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
 public class BoardListPanel extends JPanel{
-	JLabel la1,la2,la3,la4,la5,la6;
-	//JLabel b2, b3, b4, b5, b6;
-	//JLabel pageLa=new JLabel("0 page / 0 pages");
-    JButton insertBtn,b2,b3,b4,b5,b6,b7,b8;
-	//JButton b1;
+	JLabel titleLa;
+    JButton inBtn,prevBtn,b1,b2,b3,b4,b5,nextBtn;
     JTable table;
     DefaultTableModel model; 
     
     public BoardListPanel() {
        setLayout(null);
     	
-       la1=new JLabel("게시판",JLabel.CENTER);
-       la1.setFont(new Font("맑은 고딕",Font.BOLD,25));
-       la1.setBounds(110,30,500,40);
-  	   add(la1);
+       titleLa=new JLabel("게시판",JLabel.CENTER);
+       titleLa.setFont(new Font("맑은 고딕",Font.BOLD,25));
+       titleLa.setBounds(10,40,940,40);
+  	   add(titleLa);
   	   
-  	   insertBtn=new JButton("글쓰기");
-  	   insertBtn.setBounds(630, 441, 80, 30);
-	   add(insertBtn);
+  	   inBtn=new JButton("글쓰기");
+  	   inBtn.setBounds(830, 620, 80, 30);
+	   add(inBtn);
 	   
-	   b2 = new JButton("<");
-       b3 = new JButton("1");
-       b4 = new JButton("2");
-       b5 = new JButton("3");
-       b6 = new JButton("4");
-       b7 = new JButton("5");
-       b8 = new JButton(">");
+	   prevBtn = new JButton("<");
+       b1 = new JButton("1");
+       b2 = new JButton("2");
+       b3 = new JButton("3");
+       b4 = new JButton("4");
+       b5 = new JButton("5");
+       nextBtn = new JButton(">");
        
        
          // 버튼을 투명하게 만들기 위한 메서드 호출
+//       prevBtn.setOpaque(false);
+//       b1.setOpaque(false);
 //       b2.setOpaque(false);
 //       b3.setOpaque(false);
 //       b4.setOpaque(false);
 //       b5.setOpaque(false);
-//       b6.setOpaque(false);
-//       b7.setOpaque(false);
-//       b8.setOpaque(false);
+//       nextBtn.setOpaque(false);
 //
-//       // 내용 영역을 채우지 않도록 설정
+         // 내용 영역을 채우지 않도록 설정
+//       prevBtn.setContentAreaFilled(false);
+//       b1.setContentAreaFilled(false);
 //       b2.setContentAreaFilled(false);
 //       b3.setContentAreaFilled(false);
 //       b4.setContentAreaFilled(false);
 //       b5.setContentAreaFilled(false);
-//       b6.setContentAreaFilled(false);
-//       b7.setContentAreaFilled(false);
-//       b8.setContentAreaFilled(false);
+//       nextBtn.setContentAreaFilled(false);
        
-       JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1)); // FlowLayout 설정
-       
+       JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 1, 1)); // FlowLayout 설정
+    
+       p.add(prevBtn);
+       p.add(b1);  
        p.add(b2);
-       p.add(b3);  
+       p.add(b3);
        p.add(b4);
        p.add(b5);
-       p.add(b6);
-       p.add(b7);
-       p.add(b8);
-       p.setBounds(250, 470, 700, 35);
+       p.add(nextBtn);
+       p.setBounds(10, 620, 940, 40);
        add(p);
        
-       Dimension buttonSize = new Dimension(35, 20);
-       
+       Dimension buttonSize = new Dimension(30, 20);
+       prevBtn.setPreferredSize(buttonSize);
+       b1.setPreferredSize(buttonSize);
        b2.setPreferredSize(buttonSize);
        b3.setPreferredSize(buttonSize);
        b4.setPreferredSize(buttonSize);
        b5.setPreferredSize(buttonSize);
-       b6.setPreferredSize(buttonSize);
-       b7.setPreferredSize(buttonSize);
-       b8.setPreferredSize(buttonSize);
-      // pageLa.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
-       
-       Font buttonFont = new Font("맑은 고딕", Font.PLAIN, 11);
-       b2.setFont(buttonFont);
-       b3.setFont(buttonFont);
-       b4.setFont(buttonFont);
-       b5.setFont(buttonFont);
-       b6.setFont(buttonFont);
-       b7.setFont(buttonFont);
-       b8.setFont(buttonFont);
+       nextBtn.setPreferredSize(buttonSize); 
  	   
- 	   String[] col={"No","제목","작성자","작성일","조회수"};
-  	   String[][] row=new String[0][5];
+ 	   String[] col={"No","분류","제목","작성자","작성일","조회수"};
+  	   String[][] row=new String[0][6];
   	   model=new DefaultTableModel(row,col);
  	   table=new JTable(model);
   	   JScrollPane js=new JScrollPane(table);
-  	   js.setBounds(40, 95, 670, 340);
+  	   js.setBounds(30, 110, 880, 500);
  	   add(js);
  	   
  	  
@@ -107,7 +93,7 @@ public class BoardListPanel extends JPanel{
        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer); 
       
        TableColumn column;
- 	   int[] colWidths = {40, 200, 100, 100, 60};
+ 	   int[] colWidths = {40, 130, 450, 100, 100, 60};
  	   for (int i = 0; i < col.length; i++) {
  	      column = table.getColumnModel().getColumn(i);
  	      column.setPreferredWidth(colWidths[i]);

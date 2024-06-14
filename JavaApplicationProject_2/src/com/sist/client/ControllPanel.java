@@ -11,11 +11,13 @@ public class ControllPanel extends JPanel{
 	FindPanel findP=new FindPanel();
 	BoardListPanel boardLP=new BoardListPanel();
 	BoardInsertPanel boardIP=new BoardInsertPanel();
+	ChatPanel chatP=new ChatPanel();
 	public ControllPanel() {
 		setLayout(card);
 		add("BOOKLIST",bookListP);
 		add("FIND", findP);
 		add("BOARD", boardLP);
 		add("BOARD_IN", boardIP);
+		add("CHAT", chatP);
 	}
 }

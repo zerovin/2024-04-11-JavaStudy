@@ -1,11 +1,12 @@
 package com.sist.dao;
 import java.util.*;
+import java.lang.reflect.Member;
 import java.rmi.MarshalException;
 import java.sql.*;
 public class MemberDAO {
 	private Connection conn;
 	private PreparedStatement ps;
-	private final String URL="jdbc:oracle:thin:@localhost:1521:XE";
+	private final String URL="jdbc:oracle:thin:@192.168.10.124:1521:XE";
 	private static MemberDAO dao; //싱글턴
 	
 	//1.드라이버 등록
@@ -18,7 +19,7 @@ public class MemberDAO {
 	//2.오라클 연결
 	public void getConnection() {
 		try {
-			conn=DriverManager.getConnection(URL,"hr","happy"); //conn hr/happy
+			conn=DriverManager.getConnection(URL,"hr2","happy"); //conn hr/happy
 		}catch(Exception ex) {}
 	}
 	
@@ -128,7 +129,31 @@ public class MemberDAO {
 		}
 		return vo;
 	}
-	
+	public MemberVO memberInfo2(String id) {
+		MemberVO vo=new MemberVO();
+		try{
+			getConnection();
+			String sql="SELECT name, sex, addr1, phone, content, email "
+					+"FROM member "
+					+"WHERE id=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			vo.setName(rs.getString(1));
+			vo.setSex(rs.getString(2));
+			vo.setAddr1(rs.getString(3));
+			vo.setPhone(rs.getString(4));
+			vo.setContent(rs.getString(5));
+			vo.setEmail(rs.getString(6));
+			rs.close();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			disConnection();
+		}
+		return vo;
+	}
 	//2.회원가입 - 아이디중복체크, 우편번호검색
 	/*
 	  ID               NOT NULL VARCHAR2(20)
@@ -236,5 +261,4 @@ public class MemberDAO {
 	//3.회원수정
 	//4.회원탈퇴
 	//SQL문장 제작할 줄 알아야 웹도 가능 DAO는 변경X
-	
 }

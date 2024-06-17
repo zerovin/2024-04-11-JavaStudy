@@ -15,13 +15,13 @@ public class BoardInsertPanel extends JPanel{
 	  
       titleLa=new JLabel("글쓰기",JLabel.CENTER);
       titleLa.setFont(new Font("맑은 고딕",Font.BOLD,25));
-      titleLa.setBounds(110,25,500,40);
-	  add(titleLa);
+      titleLa.setBounds(10,20,940,40);
+ 	   add(titleLa);
       
       nameLa=new JLabel("이름");
       nameTf=new JTextField();
-      nameLa.setBounds(100, 80, 50, 30);
-      nameTf.setBounds(140, 80, 110, 30);
+      nameLa.setBounds(30, 80, 50, 30);
+      nameTf.setBounds(140, 80, 150, 30);
       add(nameLa);
       add(nameTf);
       

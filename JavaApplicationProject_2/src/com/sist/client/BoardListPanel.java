@@ -16,11 +16,11 @@ public class BoardListPanel extends JPanel{
     	
        titleLa=new JLabel("게시판",JLabel.CENTER);
        titleLa.setFont(new Font("맑은 고딕",Font.BOLD,25));
-       titleLa.setBounds(10,40,940,40);
+       titleLa.setBounds(10,20,940,40);
   	   add(titleLa);
   	   
   	   inBtn=new JButton("글쓰기");
-  	   inBtn.setBounds(830, 620, 80, 30);
+  	   inBtn.setBounds(830, 590, 80, 30);
 	   add(inBtn);
 	   
 	   prevBtn = new JButton("<");
@@ -59,7 +59,7 @@ public class BoardListPanel extends JPanel{
        p.add(b4);
        p.add(b5);
        p.add(nextBtn);
-       p.setBounds(10, 620, 940, 40);
+       p.setBounds(10, 590, 940, 40);
        add(p);
        
        Dimension buttonSize = new Dimension(30, 20);
@@ -76,7 +76,7 @@ public class BoardListPanel extends JPanel{
   	   model=new DefaultTableModel(row,col);
  	   table=new JTable(model);
   	   JScrollPane js=new JScrollPane(table);
-  	   js.setBounds(30, 110, 880, 500);
+  	   js.setBounds(30, 80, 880, 500);
  	   add(js);
  	   
  	  

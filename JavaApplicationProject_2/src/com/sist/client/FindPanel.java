@@ -18,9 +18,9 @@ public class FindPanel extends JPanel{
 	   setLayout(null); 
 	   
 	   JPanel p=new JPanel();
-	   searchT.setBounds(30, 50, 400, 30);
+	   searchT.setBounds(30, 20, 400, 30);
    	   add(searchT);
-   	   search.setBounds(450, 50, 100, 30);
+   	   search.setBounds(450, 20, 100, 30);
    	   add(search);
 
 	   String[] col= {"책 제목","저자","출판사","발행일"};
@@ -29,11 +29,11 @@ public class FindPanel extends JPanel{
    	   table=new JTable(find);
    	   JScrollPane js=new JScrollPane(table);
    	   
-	   js.setBounds(30, 110, 880, 500);
+	   js.setBounds(30, 80, 880, 500);
 	   add(js);
 	   
 	   entire=new JButton("전체보기");
-	   entire.setBounds(30, 620, 100, 30);
+	   entire.setBounds(30, 590, 100, 30);
 	   add(entire);
 	   /*
 	   add=new JButton("추가");

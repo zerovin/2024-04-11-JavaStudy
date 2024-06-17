@@ -2,6 +2,7 @@ package com.sist.test;
 import java.util.*;
 import java.awt.image.DataBufferDouble;
 import java.io.*;
+import java.lang.reflect.Member;
 import java.net.*;
 
 import com.sist.commons.Function;
@@ -97,6 +98,10 @@ public class Server implements Runnable{
 					int protocol=Integer.parseInt(st.nextToken());
 					switch(protocol) {
 						case Function.LOGIN:{ //로그인을 요청했다면
+							/*
+							 *  로그인 - 로그인 하는 사람 MYLOG 
+							 *         로그인 하고 있던 사람 LOGIN 
+							 */
 							//ID 받기
 							id=st.nextToken();
 							//정보얻기
@@ -128,13 +133,54 @@ public class Server implements Runnable{
 						}
 						break;
 						case Function.EXIT:{ //나가기 요청
+							/*
+							 *  나가기 - 나가는 사람 MYEXIT 
+							 *         남아있는 사람 EXIT
+							 *         
+							 *  Client - Slave
+							 *  Server - Master
+							 *  Server => Client에게 지시를 내린다
+							 *  Client => Server에서  지시를 받아서 동작
+							 */
+							//남아있는 사람 시점
+							messageAll(Function.EXIT+"|"+id); //테이블에서 제거
+							messageAll(Function.CHAT+"|[☞ 알림]"+name+"님이 퇴장하셨습니다");
 							
+							//나가는 사람 시점
+							for(Client client:waitVc) {
+								if(client.id.equals(id)) {
+									messageTo(Function.MYEXIT+"|"); //윈도우창 종료
+									waitVc.remove(client);
+									in.close();
+									out.close();
+								}
+							}
 						}
 						break;
 						case Function.CHAT:{ //채팅 요청
 							String message=st.nextToken();
-							messageTo(Function.CHAT+"|["
+							messageAll(Function.CHAT+"|["
 									+name+"]"+message);
+						}
+						break;
+						
+						/*
+						 *  클라이언트 - 요청하기 => a, input, form
+						 *            응답출력 => html, css
+						 *  서버 - 요청받기 => 자바 라이브러리 HttpSevletRequest
+						 *        응답 => HttpServletResponse
+						 *        저장 / 수정 / 삭제 / 찾기 => JDBC(오라클연동)
+						 */
+						case Function.INFO:{
+							String yid=st.nextToken();
+							MemberVO vo=dao.memberInfo2(yid);
+							messageTo(Function.INFO+"|"
+									+vo.getName()+"|"
+									+vo.getSex()+"|"
+									+vo.getAddr1()+"|"
+									+vo.getEmail()+"|"
+									+vo.getPhone()+"|"
+									+vo.getContent());
 						}
 						break;
 					}

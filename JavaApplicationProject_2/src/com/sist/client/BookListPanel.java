@@ -1,11 +1,9 @@
 package com.sist.client;
 import java.awt.*;
-import java.util.ArrayList;
-
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.SimpleAttributeSet;
-
 import com.sist.dao.*;
 import java.text.*;
 //사원 정보 출력 => JOIN
@@ -31,8 +29,8 @@ public class BookListPanel extends JPanel{
 		
 		//데이터 첨부
 		BookDAO dao=BookDAO.newInstance();
-		ArrayList<BookVO> list=dao.bookListData();
-		
+		ArrayList<BookVO> list=dao.bookListData(1);
+		/*
 		for(BookVO vo:list) {
 			String[] data= {
 					String.valueOf(vo.getNum()),
@@ -40,10 +38,11 @@ public class BookListPanel extends JPanel{
 					vo.getWriter(),
 					vo.getTranslator(),
 					String.valueOf(vo.getPrice()),
-					new SimpleDateFormat("yyyy-MM-dd").format(vo.getPubldate()),
+					new SimpleDateFormat("yyyy-MM-dd").format(vo.getPubdate()),
 					vo.getSeries()
 			};
 			model.addRow(data);
 		}
+		*/
 	}
 }

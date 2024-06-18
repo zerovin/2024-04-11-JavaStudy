@@ -26,7 +26,7 @@ public class MypagePanel extends JPanel{
 	  	
 	  	id=new JLabel("ID");
 	  	id.setFont(new Font("맑은 고딕",Font.BOLD,15));
-	  	id.setBounds(30, 130, 80, 30);
+	  	id.setBounds(30, 150, 80, 30);
 	  	add(id);
 	  	
 	  	name=new JLabel("이름");

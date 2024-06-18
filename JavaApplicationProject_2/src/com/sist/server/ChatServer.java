@@ -112,10 +112,6 @@ public class ChatServer implements Runnable{
 							}
 						}
 						break;
-						case Function.MYLOG:{
-							
-						}
-						break;
 						case Function.CHAT:{
 							String message=st.nextToken();
 							String color=st.nextToken();

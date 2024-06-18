@@ -7,9 +7,10 @@ import javax.swing.JPanel;
 
 public class ControllPanel extends JPanel{
 	CardLayout card=new CardLayout();
-	HomePanel homeP=new HomePanel();
+	HomePanel homeP;
+	BookDetailPanel bookDP;
 	BookListPanel bookListP=new BookListPanel();
-	FindPanel findP=new FindPanel();
+	FindPanel findP;
 	BoardListPanel boardLP=new BoardListPanel();
 	BoardInsertPanel boardIP=new BoardInsertPanel();
 	ChatPanel chatP=new ChatPanel();
@@ -17,8 +18,12 @@ public class ControllPanel extends JPanel{
 	
 	public ControllPanel() {
 		setLayout(card);
+		homeP=new HomePanel(this);
+		bookDP=new BookDetailPanel(this);
+		findP=new FindPanel(this);
+		//add("BOOKLIST",bookListP);
 		add("HOME", homeP);
-		add("BOOKLIST",bookListP);
+		add("DETAIL", bookDP);
 		add("FIND", findP);
 		add("BOARD", boardLP);
 		add("BOARD_IN", boardIP);

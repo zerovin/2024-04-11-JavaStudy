@@ -1,6 +1,8 @@
 package com.sist.dao;
 import java.util.*;
+import javax.swing.text.SimpleAttributeSet;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 public class BookDAO {
 	private Connection conn;
 	private PreparedStatement ps;
@@ -45,25 +47,130 @@ public class BookDAO {
 	//1.emp, dept 데이터 출력 (웹, 윈도우) => DAO는 변경이 없다 React,Vue,Ajax 가능
 	// DAO / VO는 변경X
 	// SQL은 검색언어 => SELECT 중요
-	public ArrayList<BookVO> bookListData(){
+	
+	// 총페이지 구하기
+	public int bookTotalPage() {
+		int total=0;
+		try {
+			//1.연결
+			getConnection();
+			//2.SQL문장
+			String sql="SELECT CEIL(COUNT(*)/15.0) FROM wiki";
+			//3.오라클로 전송
+			ps=conn.prepareStatement(sql);
+			//4.SQL문장 실행결과 요청 => 실행결과 저장 ResultSet
+			ResultSet rs=ps.executeQuery();
+			//5.커서위치를 데이터가 출력된 첫번째 위치로 이동
+			rs.next();
+			total=rs.getInt(1);
+			//6.메모리 닫기
+			rs.close();
+			
+			//쉬운 프로그램은 모든 개발자가 동일한 코딩을 하는 프로그램 => 표준화
+			//=> 라이브러리 사용 MyBatis, Spring
+		}catch(Exception ex) {
+			//에러확인 => 복구는 불가
+			ex.printStackTrace();
+		}finally {
+			//닫기
+			disConnection();
+		}
+		return total;
+	}
+	public ArrayList<BookVO> bookListData(int page){
 		ArrayList<BookVO> list=new ArrayList<BookVO>();
 		try {
 			getConnection();
-			String sql="SELECT num, bookname, writer, translator, price, pubdate, series FROM wiki";
+			String sql="SELECT num, image, bookname, no "
+					+"FROM (SELECT num, image, bookname, rownum as no "
+					+"FROM (SELECT num, image, bookname "
+					+"FROM wiki ORDER BY num ASC)) "
+					+"WHERE no BETWEEN ? AND ?";
+			int rowSize=15;
+			int start=(rowSize*page)-(rowSize-1);
+			int end=rowSize*page;
 			ps=conn.prepareStatement(sql);
+			ps.setInt(1, start);
+			ps.setInt(2, end);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				BookVO vo=new BookVO();
 				vo.setNum(rs.getInt(1));
-				vo.setBookname(rs.getString(2));
-				vo.setWriter(rs.getString(3));
-				vo.setTranslator(rs.getString(4));
-				vo.setPrice(rs.getInt(5));
-				vo.setPubldate(rs.getDate(6));
-				vo.setSeries(rs.getNString(7));
-				
+				vo.setImage(rs.getString(2));
+				vo.setBookname(rs.getString(3));
 				list.add(vo);
 			}
+			rs.close();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			disConnection();
+		}
+		return list;
+	}
+	public BookVO bookDetailData(int num) {
+		BookVO vo=new BookVO();
+		try {
+			getConnection();
+			//조회수 증가
+			String sql="UPDATE wiki SET "
+					+"hit=hit+1 "
+					+"WHERE num=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, num);
+			ps.executeUpdate(); //commit()포함
+			
+			//데이터 읽기
+			sql="SELECT num, bookname, writer, translator, series, "
+					+"pubdate, isbn, price, image "
+					+"FROM wiki "
+					+"WHERE num=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, num);
+			ResultSet rs=ps.executeQuery();
+			rs.next();
+			
+			//값을 VO에 저장
+			vo.setNum(rs.getInt(1));
+			vo.setBookname(rs.getString(2));
+			vo.setWriter(rs.getString(3));
+			vo.setTranslator(rs.getString(4));
+			vo.setSeries(rs.getString(5));
+			vo.setPubdate(rs.getDate(6));
+			vo.setIsbn(rs.getLong(7));
+			vo.setPrice(rs.getInt(8));
+			vo.setImage(rs.getString(9));
+			rs.close();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally { 
+			disConnection();
+		}
+		return vo;
+	}
+	
+	public ArrayList<BookVO> bookFindData(String name){
+		ArrayList<BookVO> list=new ArrayList<BookVO>();
+		try {
+			getConnection();
+			String sql="SELECT num, image, bookname, writer, price, series "
+					+"FROM wiki "
+					+"WHERE bookname LIKE '%'||?||'%' "
+					+"ORDER BY num ASC";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				BookVO vo=new BookVO();
+				vo.setNum(rs.getInt(1));
+				vo.setImage(rs.getString(2));
+				vo.setBookname(rs.getString(3));
+				vo.setWriter(rs.getString(4));
+				vo.setPrice(rs.getInt(5));
+				vo.setSeries(rs.getString(6));
+				list.add(vo);
+			}
+			rs.close();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}finally {

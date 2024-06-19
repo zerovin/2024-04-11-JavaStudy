@@ -157,12 +157,13 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 			joinP.genderW.setSelected(false);
 			joinP.birthF.setText("");
 			joinP.postF.setText("");
-			joinP.addr1.setText("");
-			joinP.addr2.setText("");
+			joinP.addr1F.setText("");
+			joinP.addr2F.setText("");
 			joinP.phoneF1.setText("");
 			joinP.phoneF2.setText("");
 			joinP.phoneF3.setText("");
-			joinP.content.setText("");
+			joinP.emailF.setText("");
+			joinP.conT.setText("");
 		}else if(e.getSource()==joinP.cancel) {
 			loginP.setVisible(true);
 			joinP.setVisible(false);

@@ -2,15 +2,168 @@ package com.sist.client;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-public class MypagePanel extends JPanel{
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.*;
+import java.util.List;
+import java.net.*;
+import java.text.DecimalFormat;
+
+import com.sist.commons.*;
+import com.sist.dao.*;
+public class MypagePanel extends JPanel implements ActionListener, MouseListener {
+	JLabel titleLa;
+	JTable table;
+	JButton listBtn;
+	DefaultTableModel model;
+	TableColumn column;
+	WikiDAO dao;
+	ControllPanel ctrP;
+	
+	public MypagePanel(ControllPanel ctrP) {
+		this.ctrP=ctrP;
+		dao=WikiDAO.newInstance();
+		
+		titleLa=new JLabel("장바구니",JLabel.CENTER);
+		titleLa.setFont(new Font("맑은 고딕",Font.BOLD,25));
+		setLayout(null);
+		titleLa.setBounds(155, 20, 620, 50);
+		add(titleLa);
+		
+		String[] col={"번호","구매일","","도서명","구매가격","수량"};
+		Object[][] row=new Object[0][5];
+		model=new DefaultTableModel(row, col) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			@Override //이미지출력
+			public Class<?> getColumnClass(int columnIndex) {
+				// TODO Auto-generated method stub
+				return getValueAt(0, columnIndex).getClass();
+			}
+		};
+		table=new JTable(model);
+		table.setRowHeight(50);
+		JScrollPane js=new JScrollPane(table);
+		
+		js.setBounds(30, 80, 870, 520);
+		add(js);
+		
+		for(int i=0;i<col.length;i++)
+		{
+			DefaultTableCellRenderer cellRend=new DefaultTableCellRenderer();
+			cellRend.setHorizontalAlignment(SwingConstants.CENTER);
+			column=table.getColumnModel().getColumn(i);
+			if(i==0){
+				column.setPreferredWidth(50);
+				column.setCellRenderer(cellRend);
+			}else if(i==1){
+				column.setPreferredWidth(100);
+				column.setCellRenderer(cellRend);
+			}else if(i==2){
+				column.setPreferredWidth(100);
+			}else if(i==3){
+				column.setPreferredWidth(450);
+			}else if(i==4){
+				column.setPreferredWidth(100);
+				column.setCellRenderer(cellRend);
+			}else if(i==5){
+				column.setPreferredWidth(50);
+				column.setCellRenderer(cellRend);
+			}
+		}
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setShowVerticalLines(false);
+		table.getTableHeader().setBackground(Color.LIGHT_GRAY);
+		
+		listBtn=new JButton("목록");
+		listBtn.setBounds(800, 620, 100, 35);
+		add(listBtn);
+		
+		table.addMouseListener(this);
+		listBtn.addActionListener(this);
+	}
+	public void print() {
+		String id=ctrP.cliMain.myId;
+		List<CartVO> list=dao.cartSelect(id);
+		for(int i=model.getRowCount()-1;i>=0;i--) {
+			model.removeRow(i);
+		}
+		for(CartVO vo:list) {
+			try {
+				URL url=new URL(vo.getWvo().getImage());
+				Image img=ImageChange.getImage(new ImageIcon(url), 45, 45);
+				Object[] data= {
+						vo.getBno(),
+						vo.getRegdate(),
+						new ImageIcon(img),
+						vo.getWvo().getBookname(),
+						new DecimalFormat("##,###,###").format(vo.getPrice()),
+						vo.getAccount()
+				};
+				model.addRow(data);
+			}catch(Exception ex) {
+				
+			}
+		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource()==listBtn) {
+			ctrP.card.show(ctrP, "HOME");
+		}
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource()==table) {
+			if(e.getClickCount()==2) {
+				int row=table.getSelectedRow();
+				String cno=model.getValueAt(row, 0).toString();
+				int sel=JOptionPane.showConfirmDialog(this, "장바구니에서 삭제할까요?", "삭제", JOptionPane.YES_NO_OPTION);
+				if(sel==JOptionPane.YES_OPTION) {
+					dao.cartCancel(Integer.parseInt(cno));
+					print();
+				}
+			}
+		}
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	JLabel title, memberInfo, id, name, email, addr, phone;
+	JLabel myId, myName, myEmail, myAddr, myPhone;
+	JLabel cart, totalCount, totalPrice;
+	JTable cartTable;
+	DefaultTableModel cartModel;
+	JComboBox count;
+	JButton orderBtn, listBtn;
+	ControllPanel ctrP;
+	
 	public MypagePanel() {
-		JLabel title, memberInfo, id, name, email, addr, phone;
-		JLabel myId, myName, myEmail, myAddr, myPhone;
-		JLabel cart, totalCount, totalPrice;
-		JTable cartTable;
-		DefaultTableModel cartModel;
-		JComboBox count;
-		JButton orderBtn, listBtn;
 		
 		setLayout(null);
 		
@@ -92,4 +245,6 @@ public class MypagePanel extends JPanel{
 	  	listBtn.setBounds(810, 570, 100, 30);
 	  	add(listBtn);
 	}
+	*/
+
 }

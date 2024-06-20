@@ -16,14 +16,12 @@ public class LoginPanel extends JFrame{
 			protected void paintComponent(Graphics g) {
 				// TODO Auto-generated method stub
 				super.paintComponent(g);
-				setOpaque(false);
 				g.drawImage(back, 0, 0, getWidth(), getHeight(), this);
 			}			
 		});
 		
-		titleLa=new JLabel("도서관리 프로그램",JLabel.CENTER);
-		titleLa.setFont(new Font("맑은 고딕",Font.BOLD,30));
-		titleLa.setForeground(Color.WHITE);
+		ImageIcon main_logo=new ImageIcon("c:\\project_image\\login_logo.png");
+		titleLa=new JLabel(main_logo);
 		
 		idLa=new JLabel("아이디",JLabel.RIGHT);
 		pwdLa=new JLabel("비밀번호",JLabel.RIGHT);
@@ -38,7 +36,7 @@ public class LoginPanel extends JFrame{
 		//배치
 		setLayout(null); //사용자정의
 		
-		titleLa.setBounds(10, 230, 940, 50);
+		titleLa.setBounds(330, 230, 290, 34);
 		add(titleLa);
 		
 		
@@ -67,11 +65,4 @@ public class LoginPanel extends JFrame{
 		setVisible(true);
 	}
 	
-	/*
-	//스킨 = 배경 paintComponent
-	@Override
-	protected void paintComponent(Graphics g) {
-		g.drawImage(back, 0, 0, getWidth(), getHeight(), this);
-	}
-	*/
 }

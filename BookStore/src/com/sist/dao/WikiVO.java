@@ -9,7 +9,7 @@ public class WikiVO {
 	private int page, price;
 	private Date pubdate;
 	private String image;
-	private String series;
+	private String series, detail;
 	private int hit;
 }
 

@@ -28,7 +28,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 	PostFindFrame post=new PostFindFrame(); //우편번호 검색창
 	IdCheckFrame idFrm=new IdCheckFrame();
 	MenuPanel menuP=new MenuPanel();
-	ControllPanel ctrP=new ControllPanel();
+	ControllPanel ctrP;
 	//네트워크에 필요한 객체
 	Socket s; //통신기기 => 핸드폰
 	OutputStream out; //서버로 전송
@@ -45,6 +45,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 	int selRow=-1;
 	//BoardListPanel boardLP=new BoardListPanel();
 	public ClientMain() {
+		ctrP=new ControllPanel(this);
 		setLayout(null);
 		
 		ImageIcon logo_img=new ImageIcon("c:\\project_image\\bookstore_logo.png");
@@ -68,7 +69,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 		menuP.newsBtn.addActionListener(this); //뉴스
 		menuP.boardBtn.addActionListener(this); //게시판
 		menuP.chatBtn.addActionListener(this); //채팅
-		menuP.mypageBtn.addActionListener(this); //채팅
+		menuP.mypageBtn.addActionListener(this); //마이페이지
 		menuP.exitBtn.addActionListener(this); //종료
 		
 		loginP.loginBtn.addActionListener(this); //로그인
@@ -90,7 +91,10 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 		
 		ctrP.chatP.chatInput.addActionListener(this); // 채팅창입력
 		ctrP.chatP.table.addMouseListener(this); //채팅대기테이블 클릭
+		ctrP.chatP.oneBtn.addActionListener(this); //상담버튼
 		ctrP.chatP.infoBtn.addActionListener(this); //정보보기
+		ctrP.chatP.sendTf.addActionListener(this); //상담
+		ctrP.chatP.oneExit.addActionListener(this); //상담종료
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -178,11 +182,14 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 			ctrP.card.show(ctrP,"HOME");
 		}else if(e.getSource()==menuP.findBtn){
 			ctrP.card.show(ctrP,"FIND");
+		}else if(e.getSource()==menuP.newsBtn) {
+			ctrP.card.show(ctrP, "NEWS");
 		}else if(e.getSource()==menuP.boardBtn) {
 			ctrP.card.show(ctrP, "BOARD");
 		}else if(e.getSource()==menuP.chatBtn) {
 			ctrP.card.show(ctrP, "CHAT");
 		}else if(e.getSource()==menuP.mypageBtn) {
+			ctrP.myP.print();
 			ctrP.card.show(ctrP, "MYPAGE");
 		}else if(e.getSource()==menuP.exitBtn) {
 			try {
@@ -354,8 +361,32 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 			try {
 				out.write((Function.INFO+"|"+yid+"\n").getBytes());
 			}catch(Exception ex) {}
+		}else if(e.getSource()==ctrP.chatP.oneBtn) {
+			String you=ctrP.chatP.userBox.getSelectedItem().toString();
+			if(!you.equals("상담자")) {
+				try {
+					out.write((Function.ONEINIT+"|"+you+"|"+myId+"\n").getBytes());
+				}catch(Exception ex) {}
+			}else {
+				JOptionPane.showMessageDialog(this, "상담자를 선택하세요!!");
+			}
+		}else if(e.getSource()==ctrP.chatP.sendTf) {
+			String youId=ctrP.chatP.youTf.getText();
+			String message=ctrP.chatP.sendTf.getText();
+			if(message.length()<1) {
+				return;
+			}
+			try {
+				out.write((Function.ONETOONE+"|"+youId+"|"+message+"\n").getBytes());
+			}catch(Exception ex) {}
+			ctrP.chatP.sendTf.setText("");
+			ctrP.chatP.sendTf.requestFocus();
+		}else if(e.getSource()==ctrP.chatP.oneExit) {
+			try{
+				String youId=ctrP.chatP.youTf.getText();
+				out.write((Function.ONEEXIT+"|"+youId+"\n").getBytes());
+			}catch(Exception ex) {}
 		}
-
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -388,7 +419,6 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 				}
 			}
 		}
-
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -435,6 +465,10 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 					case Function.MYLOG:{
 						myId=st.nextToken();
 						String name=st.nextToken();
+						String admin=st.nextToken();
+						if(admin.equals("y")) {
+							ctrP.chatP.oneBtn.setEnabled(false);
+						}
 						setTitle(name+"님의 채팅창");
 						loginP.setVisible(false);
 						setVisible(true);
@@ -448,6 +482,38 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 						ctrP.chatP.chatBar.setValue(ctrP.chatP.chatBar.getMaximum());
 					}
 					break;
+					case Function.ONEINIT:{
+						String userId=st.nextToken();
+						int sel=JOptionPane.showConfirmDialog(this, userId+"님이 상담을 요청하셨습니다", "상담요청", JOptionPane.YES_NO_OPTION);
+						if(sel==JOptionPane.YES_OPTION) {
+							out.write((Function.ONEYES+"|"+userId+"\n").getBytes());
+						}else {
+							out.write((Function.ONENO+"|"+userId+"\n").getBytes());
+						}
+					}
+					break;
+					case Function.ONENO:{
+						String adminId=st.nextToken();
+						JOptionPane.showMessageDialog(this, adminId+"님이 거절하셨습니다");
+					}
+					break;
+					case Function.ONEYES:{
+						String id=st.nextToken();
+						ctrP.chatP.youTf.setText(id);
+						ctrP.chatP.pan.setVisible(true);
+					}
+					break;
+					case Function.ONETOONE:{
+						ctrP.chatP.ta.append(st.nextToken()+"\n");
+						ctrP.chatP.oneBar.setValue(ctrP.chatP.oneBar.getMaximum());
+					}
+					break;
+					case Function.ONEEXIT:
+					  {
+						  JOptionPane.showMessageDialog(this, "상담을 종료합니다");
+						  ctrP.chatP.pan.setVisible(false);
+					  }
+					  break;
 					case Function.INFO:{
 						String info="이름 : "+st.nextToken()+"\n"
 								+"성별 : "+st.nextToken()+"\n"

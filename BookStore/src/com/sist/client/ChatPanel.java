@@ -16,6 +16,13 @@ public class ChatPanel extends JPanel{
 		JButton oneBtn, infoBtn;
 		JScrollBar chatBar;
 		
+		//상담
+		JLabel la;
+		JTextField youTf, sendTf;
+		JTextArea ta;
+		JButton oneExit;
+		JPanel pan=new JPanel();
+		JScrollBar oneBar;
 		public ChatPanel() {
 			setLayout(null);
 			chatpane=new JTextPane();
@@ -53,19 +60,45 @@ public class ChatPanel extends JPanel{
 			};
 			table=new JTable(model);
 			JScrollPane tableJs=new JScrollPane(table);
-			tableJs.setBounds(650, 45, 250, 570);
+			tableJs.setBounds(650, 45, 250, 270);
 			add(tableJs);
 			
 			userBox=new JComboBox<String>();
-			userBox.setBounds(650, 620, 80, 30);
+			userBox.setBounds(650, 320, 80, 30);
+			userBox.addItem("상담자");
 			add(userBox);
 			
 			oneBtn=new JButton("1:1상담");
-			oneBtn.setBounds(735, 620, 80, 30);
+			oneBtn.setBounds(735, 320, 80, 30);
 			add(oneBtn);
 			infoBtn=new JButton("정보보기");
-			infoBtn.setBounds(820, 620, 80, 30);
+			infoBtn.setBounds(820, 320, 80, 30);
 			add(infoBtn);
+			
+			la=new JLabel("1:1 대상");
+			youTf=new JTextField(10);
+			youTf.setEnabled(false);
+			oneExit=new JButton("종료");
+			
+			ta=new JTextArea();
+			JScrollPane js3=new JScrollPane(ta);
+			oneBar=js3.getVerticalScrollBar();
+			ta.setEditable(false);
+			
+			sendTf=new JTextField(30);
+			
+			pan.setLayout(new BorderLayout());
+			
+			JPanel p=new JPanel();
+			p.add(la); p.add(youTf);p.add(oneExit);
+			pan.add("North",p);			
+			pan.add("Center",js3);
+			pan.add("South",sendTf);
+			
+			pan.setBounds(650, 360, 250, 290);
+			add(pan);
+			
+			pan.setVisible(false);
 		}
 		
 		public void initStyle(){

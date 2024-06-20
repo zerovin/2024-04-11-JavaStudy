@@ -21,14 +21,14 @@ public class HomePanel extends JPanel implements ActionListener, MouseListener{
 	int totalpage=0; //총페이지
 	
 	//데이터베이스 연결
-	BookDAO dao;
+	GoodsDAO dao;
 	
 	ControllPanel ctrP;
-	
+	String myId;
 	//초기화
 	public HomePanel(ControllPanel ctrP) {
 		this.ctrP=ctrP;
-		dao=BookDAO.newInstance();
+		dao=GoodsDAO.newInstance();
 		pan.setLayout(new GridLayout(3, 5, 5, 5));
 
 		setLayout(new BorderLayout());
@@ -46,16 +46,16 @@ public class HomePanel extends JPanel implements ActionListener, MouseListener{
 		b2.addActionListener(this);
 	}
 	public void print() {
-		totalpage=dao.bookTotalPage();
-		ArrayList<BookVO> list=dao.bookListData(curpage);
+		totalpage=dao.goodsTotalPage();
+		ArrayList<GoodsVO> list=dao.goodsListData(curpage);
 		for(int i=0;i<list.size();i++) {
-			BookVO vo=list.get(i);
+			GoodsVO vo=list.get(i);
 			try {
-				URL url=new URL(vo.getImage());
+				URL url=new URL(vo.getGoods_poster());
 				//이미지 크기 축소
-				Image img=ImageChange.getImage(new ImageIcon(url), 120, 160 );
+				Image img=ImageChange.getImage(new ImageIcon(url), 200, 200 );
 				imgs[i]=new JLabel(new ImageIcon(img));
-				imgs[i].setToolTipText(vo.getBookname()+"^"+vo.getNum());
+				imgs[i].setToolTipText(vo.getGoods_name()+"^"+vo.getNo());
 				pan.add(imgs[i]);
 				imgs[i].addMouseListener(this); //출력 초기상태에서 이벤트 등록
 			}catch(Exception ex) {}
@@ -92,9 +92,10 @@ public class HomePanel extends JPanel implements ActionListener, MouseListener{
 		for(int i=0;i<imgs.length;i++) {
 			if(e.getSource()==imgs[i]) {
 				if(e.getClickCount()==2) {
-					String num=imgs[i].getToolTipText();
-					num=num.substring(num.lastIndexOf("^")+1);
-					ctrP.bookDP.print(Integer.parseInt(num));
+					String no=imgs[i].getToolTipText();
+					no=no.substring(no.lastIndexOf("^")+1);
+					ctrP.goodsDP.print(Integer.parseInt(no));
+					//ctrP.goodsDP.print();
 					ctrP.card.show(ctrP, "DETAIL");
 				}
 			}

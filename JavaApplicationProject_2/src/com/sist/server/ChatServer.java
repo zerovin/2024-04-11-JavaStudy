@@ -106,7 +106,7 @@ public class ChatServer implements Runnable{
 							waitVc.add(this);
 							
 							//Login => Home으로 변경
-							messageTo(Function.MYLOG+"|"+id+"|"+name);
+							messageTo(Function.MYLOG+"|"+id+"|"+name+"|"+admin);
 							for(Client client:waitVc) {
 								messageTo(Function.LOGIN+"|"+client.id+"|"+client.name+"|"+client.sex+"|"+client.admin);
 							}
@@ -116,6 +116,56 @@ public class ChatServer implements Runnable{
 							String message=st.nextToken();
 							String color=st.nextToken();
 							messageAll(Function.CHAT+"|["+name+"]"+message+"|"+color);
+						}
+						break;
+						case Function.ONEINIT:{
+							String adminId=st.nextToken();
+							String userId=st.nextToken();
+							for(Client client:waitVc) {
+								if(adminId.equals(client.id)) {
+									client.messageTo(Function.ONEINIT+"|"+userId);
+								}
+							}
+						}
+						break;
+						case Function.ONENO:{
+							String userId=st.nextToken();
+							for(Client client:waitVc) {
+								if(userId.equals(client.id)) {
+									client.messageTo(Function.ONENO+"|"+id);
+								}
+							}
+						}
+						break;
+						case Function.ONEYES:{
+							String userId=st.nextToken();
+							for(Client client:waitVc) {
+								if(userId.equals(client.id)) {
+									client.messageTo(Function.ONEYES+"|"+id); //상담받는사람
+									messageTo(Function.ONEYES+"|"+userId); //상담하는사람
+								}
+							}
+						}
+						break;
+						case Function.ONETOONE:{
+							String userId=st.nextToken();
+							String message=st.nextToken();
+							for(Client client:waitVc) {
+								if(userId.equals(client.id)) {
+									client.messageTo(Function.ONETOONE+"|["+name+"]"+message); //상담받는사람
+									messageTo(Function.ONETOONE+"|["+name+"]"+message); //상담하는사람
+								}
+							}
+						}
+						break;
+						case Function.ONEEXIT:{
+							String userId=st.nextToken();
+							for(Client client:waitVc) {
+								if(userId.equals(client.id)) {
+									client.messageTo(Function.ONEEXIT+"|"); //상담받는사람
+									messageTo(Function.ONEEXIT+"|"); //상담하는사람
+								}
+							}
 						}
 						break;
 						case Function.INFO:{
@@ -153,6 +203,7 @@ public class ChatServer implements Runnable{
 								}
 							}
 						}
+						break;
 					}
 				}
 			}catch(Exception ex) {}

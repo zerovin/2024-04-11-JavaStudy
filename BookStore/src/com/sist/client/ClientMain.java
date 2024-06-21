@@ -48,7 +48,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 		ctrP=new ControllPanel(this);
 		setLayout(null);
 		
-		ImageIcon logo_img=new ImageIcon("c:\\project_image\\bookstore_logo.png");
+		ImageIcon logo_img=new ImageIcon("img/bookstore_logo.png");
 		logo=new JLabel(logo_img);
 		logo.setBounds(40, 15, 220, 55);
 		add(logo);
@@ -115,13 +115,13 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 				//유효성 검사
 				String id=loginP.idField.getText();
 				if(id.length()<1) {
-					JOptionPane.showMessageDialog(this, "아이디을 입력하세요");
+					JOptionPane.showMessageDialog(this, "아이디를 입력하세요");
 					loginP.idField.requestFocus();
 					return;
 				}
 				String pwd=String.valueOf(loginP.pwField.getPassword()); //비밀번호 값 가지고 오기 char배열이라 String으로 변환
 				if(pwd.length()<1) {
-					JOptionPane.showMessageDialog(this, "비밀번호을 입력하세요");
+					JOptionPane.showMessageDialog(this, "비밀번호를 입력하세요");
 					loginP.pwField.requestFocus();
 					return;
 				}
@@ -337,10 +337,11 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 			
 			if(res.equals("yes")) {
 				JOptionPane.showMessageDialog(this, "회원 가입 축하합니다");
-				card.show(getContentPane(), "LOGIN");
+				loginP.setVisible(true);
+				joinP.setVisible(false);
 			}else {				
 				JOptionPane.showMessageDialog(this, "회원 가입에 실패하셨습니다\n"+res);
-			}	
+			}
 		}else if(e.getSource()==ctrP.chatP.chatInput) {
 			String msg=ctrP.chatP.chatInput.getText();
 			if(msg.length()<1) {
@@ -469,7 +470,7 @@ public class ClientMain extends JFrame implements ActionListener, MouseListener,
 						if(admin.equals("y")) {
 							ctrP.chatP.oneBtn.setEnabled(false);
 						}
-						setTitle(name+"님의 채팅창");
+						setTitle(name+"님의 Bookstore");
 						loginP.setVisible(false);
 						setVisible(true);
 					}

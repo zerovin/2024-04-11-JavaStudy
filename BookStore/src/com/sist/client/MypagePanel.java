@@ -14,9 +14,9 @@ import java.text.DecimalFormat;
 import com.sist.commons.*;
 import com.sist.dao.*;
 public class MypagePanel extends JPanel implements ActionListener, MouseListener {
-	JLabel titleLa;
+	JLabel titleLa, totalC, totalCount, totalP, totalPrice;
 	JTable table;
-	JButton listBtn;
+	JButton buyBtn, listBtn;
 	DefaultTableModel model;
 	TableColumn column;
 	WikiDAO dao;
@@ -32,7 +32,7 @@ public class MypagePanel extends JPanel implements ActionListener, MouseListener
 		titleLa.setBounds(155, 20, 620, 50);
 		add(titleLa);
 		
-		String[] col={"번호","구매일","","도서명","구매가격","수량"};
+		String[] col={"번호","구매일","","도서명","단가","수량"};
 		Object[][] row=new Object[0][5];
 		model=new DefaultTableModel(row, col) {
 			@Override
@@ -80,11 +80,36 @@ public class MypagePanel extends JPanel implements ActionListener, MouseListener
 		table.setShowVerticalLines(false);
 		table.getTableHeader().setBackground(Color.LIGHT_GRAY);
 		
+		totalC=new JLabel("| 총 구매 수량");
+		totalC.setFont(new Font("맑은 고딕",Font.BOLD,16));
+		totalC.setBounds(30, 620, 120, 35);
+		add(totalC);
+		
+		totalCount=new JLabel();
+		totalCount.setFont(new Font("맑은 고딕",Font.BOLD,16));
+		totalCount.setBounds(140, 620, 100, 35);
+		add(totalCount);
+		
+		totalP=new JLabel("| 총 구매 금액 ");
+		totalP.setFont(new Font("맑은 고딕",Font.BOLD,16));
+		totalP.setBounds(260, 620, 120, 35);
+		add(totalP);
+		
+		totalPrice=new JLabel();
+		totalPrice.setFont(new Font("맑은 고딕",Font.BOLD,16));
+		totalPrice.setBounds(380, 620, 120, 35);
+		add(totalPrice);
+		
+		buyBtn=new JButton("구매");
+		buyBtn.setBounds(690, 620, 100, 35);
+		add(buyBtn);
+		
 		listBtn=new JButton("목록");
 		listBtn.setBounds(800, 620, 100, 35);
 		add(listBtn);
 		
 		table.addMouseListener(this);
+		buyBtn.addActionListener(this);
 		listBtn.addActionListener(this);
 	}
 	public void print() {
@@ -102,7 +127,7 @@ public class MypagePanel extends JPanel implements ActionListener, MouseListener
 						vo.getRegdate(),
 						new ImageIcon(img),
 						vo.getWvo().getBookname(),
-						new DecimalFormat("##,###,###").format(vo.getPrice()),
+						new DecimalFormat("##,###,###").format(vo.getWvo().getPrice()),
 						vo.getAccount()
 				};
 				model.addRow(data);
@@ -110,12 +135,25 @@ public class MypagePanel extends JPanel implements ActionListener, MouseListener
 				
 			}
 		}
+		int ttAccount=0;
+		int ttPrice=0;
+		for(int i=0;i<=model.getRowCount()-1;i++) {
+			int account=(Integer)(model.getValueAt(i, 5));
+			ttAccount+=account;
+			totalCount.setText(String.valueOf(ttAccount));
+			
+			int price=Integer.parseInt(model.getValueAt(i, 4).toString().replaceAll("[^0-9]", ""))*account;
+			ttPrice+=price;
+			totalPrice.setText(new DecimalFormat("#,###,###").format(ttPrice)+"원");
+		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==listBtn) {
 			ctrP.card.show(ctrP, "HOME");
+		}else if(e.getSource()==buyBtn){
+			JOptionPane.showMessageDialog(this, "구매가 완료되었습니다");
 		}
 	}
 	@Override

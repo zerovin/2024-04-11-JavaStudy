@@ -75,7 +75,7 @@ public class NewsPanel extends JPanel implements ActionListener, MouseListener{
 			// 웹 => 유효성 검사 
 			if(fd.length()<1)
 			{
-				JOptionPane.showMessageDialog(this, "검색어 입력");
+				JOptionPane.showMessageDialog(this, "검색어를 입력해주세요");
 				tf.requestFocus();
 				return;
 			}

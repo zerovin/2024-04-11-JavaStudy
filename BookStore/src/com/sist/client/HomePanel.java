@@ -59,7 +59,7 @@ public class HomePanel extends JPanel implements ActionListener, MouseListener{
 		    setLayout(null);
 		    titleLa = new JLabel("베스트셀러");
 			titleLa.setFont(new Font("맑은 고딕", Font.BOLD, 22));
-			titleLa.setBounds(745,25,130,50);
+			titleLa.setBounds(745,30,130,50);
 			add(titleLa);
 			
 			String[] col = {"순위","도서명","."};
@@ -78,22 +78,27 @@ public class HomePanel extends JPanel implements ActionListener, MouseListener{
 			bestTable.setRowHeight(30);
 			bestTable.getTableHeader().setBackground(Color.pink);
 			JScrollPane js = new JScrollPane(bestTable);
-			js.setBounds(675,75,250,400);
+			js.setBounds(675,85,250,520);
 			add(js);
 			prevBtn.addActionListener(this);
 	    	nextBtn.addActionListener(this);
 	    	bestTable.addMouseListener(this);
 	    	
+	    	DefaultTableCellRenderer cellRend=new DefaultTableCellRenderer();
+			cellRend.setHorizontalAlignment(SwingConstants.CENTER);
 	    	for(int i=0;i<col.length;i++)
 	    	{
 	    		column=bestTable.getColumnModel().getColumn(i);
-	    		if(i==0)
+	    		if(i==0) {
 	    			column.setPreferredWidth(30);
+	    			column.setCellRenderer(cellRend);
+	    		}
 	    		else if(i==1)
 	    			column.setPreferredWidth(200);
 	    		else if(i==2)
 	    			column.setPreferredWidth(0);
 	    	}
+	    	bestTable.removeColumn(bestTable.getColumnModel().getColumn(2));
 				// 데이터 첨부
 				WikiDAO dao = WikiDAO.newInstance();
 				List<CartVO> list = dao.bestSeller();  

@@ -123,7 +123,7 @@ public class BookDetailPanel extends JPanel implements ActionListener,ItemListen
 		  writerLa.setText("지은이: "+ vo.getWriter());
 		  transLa.setText("옮긴이: "+vo.getTranslator());
 		  pageLa.setText("페이지: "+vo.getPage());
-		  priceLa.setText("가격:  "+vo.getPrice()+"원");
+		  priceLa.setText("가격:  "+new DecimalFormat("#,###,###").format(vo.getPrice())+"원");
 		  pubdateLa.setText("발행일: "+vo.getPubdate());
 		  seriesLa.setText("시리즈: "+vo.getSeries());
 	 }  
@@ -162,7 +162,12 @@ public class BookDetailPanel extends JPanel implements ActionListener,ItemListen
 			vo.setAccount(account);
 			String price = totalpriceLa.getText();
 			price = price.replaceAll("[^0-9]", "");
-			vo.setPrice(Integer.parseInt(price));
+			if(totalpriceLa.getText().isEmpty()) {
+				String oneprice=priceLa.getText().replaceAll("[^0-9]", "");
+				vo.setPrice(Integer.parseInt(oneprice));
+			}else {
+				vo.setPrice(Integer.parseInt(price));				
+			}
 			
 			dao.cartInsert(vo);
 			JOptionPane.showMessageDialog(this, "장바구니에 추가되었습니다 \n마이페이지에서 확인하세요");

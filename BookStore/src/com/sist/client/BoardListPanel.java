@@ -79,17 +79,17 @@ public class BoardListPanel extends JPanel implements ActionListener,MouseListen
 		}
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setShowVerticalLines(false);
-		table.setRowHeight(33);
+		table.setRowHeight(37);
 		table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getPreferredSize().width, 32));
 		table.getTableHeader().setBackground(Color.gray);
 		
 		// 배치
 		setLayout(null);
-		titleLa.setBounds(155, 20, 620, 50);
+		titleLa.setBounds(155, 50, 620, 50);
 		add(titleLa);
-		b1.setBounds(750, 500, 70, 25);
+		b1.setBounds(750, 560, 70, 25);
 		add(b1);
-		js.setBounds(120, 110, 700, 364);
+		js.setBounds(120, 140, 700, 404);
 		add(js);
 		
 		JPanel p=new JPanel();
@@ -97,7 +97,7 @@ public class BoardListPanel extends JPanel implements ActionListener,MouseListen
 		p.add(pageLa);
 		p.add(b3);
 		
-		p.setBounds(155, 540, 620, 30);
+		p.setBounds(155, 600, 620, 30);
 		add(p);
 		print();
 		

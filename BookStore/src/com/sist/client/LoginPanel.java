@@ -9,7 +9,7 @@ public class LoginPanel extends JFrame{
 	JButton loginBtn, joinBtn, cancelBtn;
 	
 	public LoginPanel() {
-		back=Toolkit.getDefaultToolkit().getImage("c:\\project_image\\back.jpg");
+		back=Toolkit.getDefaultToolkit().getImage("img/login_back.jpg");
 		
 		setContentPane(new JPanel() {
 			@Override
@@ -20,7 +20,7 @@ public class LoginPanel extends JFrame{
 			}			
 		});
 		
-		ImageIcon main_logo=new ImageIcon("c:\\project_image\\login_logo.png");
+		ImageIcon main_logo=new ImageIcon("img/login_logo.png");
 		titleLa=new JLabel(main_logo);
 		
 		idLa=new JLabel("아이디",JLabel.RIGHT);

@@ -69,7 +69,7 @@ public class BoardDAO {
 	//오라클 송수신 => Socket, OutputStream, BufferedReader => Network
 	private PreparedStatement ps;
 	//오라클 주소 = 상수형
-	private final String URL="jdbc:oracle:thin:@localhost:1521:XE"; //XE 데이블이 저장된 데이터베이스(폴더)
+	private final String URL="jdbc:oracle:thin:@192.168.10.124:1521:XE"; //XE 데이블이 저장된 데이터베이스(폴더)
 	//객체 한번만 생성 => 싱글턴
 	private static BoardDAO dao;
 	//드라이버 등록 => 오라클 연결 => SQL문장 전송 => 결과값 받기 => 데이터를 모아서 윈도우 전송
@@ -83,7 +83,7 @@ public class BoardDAO {
 	//오라클 연결
 	public void getConnection() {
 		try {
-			conn=DriverManager.getConnection(URL, "hr", "happy");
+			conn=DriverManager.getConnection(URL, "hr2", "happy");
 		}catch(Exception ex) {}
 	}
 	/*

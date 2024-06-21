@@ -157,7 +157,7 @@ DETAIL
    	 {
    		 getConnection();
  
-   		 String sql="SELECT NUM, ISBN, BOOKNAME, WRITER, TRANSLATOR, PAGE, PRICE, PUBDATE, SERIES, IMAGE "
+   		 String sql="SELECT NUM, ISBN, BOOKNAME, WRITER, NVL(TRANSLATOR, '없음'), PAGE, PRICE, PUBDATE, SERIES, IMAGE "
    		    +"FROM wiki "
    		    +"WHERE NUM=?";
    		 
